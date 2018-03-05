@@ -3,6 +3,7 @@ require_relative 'spec_helper'
 describe "Booking Manager Class" do
 
   describe "Initializer" do
+
     it "is an instance of BookingManager" do
       booking_manager = Hotel::BookingManager.new
       booking_manager.must_be_kind_of Hotel::BookingManager
@@ -24,10 +25,20 @@ describe "Booking Manager Class" do
 
       booking_manager.reservations.must_be_kind_of Array
       booking_manager.reservations.must_equal []
+      booking_manager.reservations.must_be_empty
     end
 
+  end # initializer
 
+  describe "display_room_list method" do
 
-  end
+    it "returns all rooms in the hotel" do
+      booking_manager = Hotel::BookingManager.new
+
+      booking_manager.display_room_list.must_be_kind_of Array
+      booking_manager.display_room_list.must_equal Array(1..20)
+    end
+
+  end # display_room_list
 
 end

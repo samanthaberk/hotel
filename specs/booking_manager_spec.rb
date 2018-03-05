@@ -26,11 +26,6 @@ describe "Booking Manager Class" do
       booking_manager.reservations.must_equal []
     end
 
-    # pseudocode starts here
-      # input: none
-      # output: list of 20 hotel rooms
-      #         fixed price of hotel rooms
-      #         empty array to store reservations
 
 
   end

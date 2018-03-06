@@ -12,7 +12,7 @@ describe "Booking Manager Class" do
 
     it "establishes the base data structures when instantiated" do
       booking_manager = Hotel::BookingManager.new
-      [:rooms, :price, :reservations].each do |data|
+      [:rooms, :reservations].each do |data|
         booking_manager.must_respond_to data
       end
 
@@ -20,9 +20,6 @@ describe "Booking Manager Class" do
       booking_manager.rooms.each do |room|
         room.must_be_kind_of Integer
       end
-
-      booking_manager.price.must_be_kind_of Float
-      booking_manager.price.must_equal 200.00
 
       booking_manager.reservations.must_be_kind_of Array
       booking_manager.reservations.must_equal []

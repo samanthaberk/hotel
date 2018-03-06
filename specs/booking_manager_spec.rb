@@ -18,7 +18,7 @@ describe "Booking Manager Class" do
 
       booking_manager.rooms.must_be_kind_of Array
       booking_manager.rooms.each do |room|
-        room.must_be_kind_of Integer
+        room.must_be_kind_of Hash
       end
 
       booking_manager.reservations.must_be_kind_of Array
@@ -34,7 +34,13 @@ describe "Booking Manager Class" do
       booking_manager = Hotel::BookingManager.new
 
       booking_manager.display_room_list.must_be_kind_of Array
-      booking_manager.display_room_list.must_equal Array(1..20)
+
+      i = 0
+      booking_manager.display_room_list.each do |room|
+        room.must_equal booking_manager.rooms[i]
+        i += 1
+      end
+
     end
 
   end # display_room_list
@@ -57,7 +63,7 @@ describe "Booking Manager Class" do
     end
 
     it "assigns an id to the reservation based on the total number of reservations" do
-      reservation_one = @booking_manager.reserve_room('15-03-2018', '17-03-2018')
+      reservation_one = @booking_manager.reserve_room('15-03-18', '17-03-2018')
       reservation_one.id.must_equal 1
 
       reservation_two = @booking_manager.reserve_room('18-03-2018', '20-03-2018')

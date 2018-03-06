@@ -8,7 +8,6 @@ module Hotel
 
     def initialize
       @rooms = Array(1..20)
-      @price = 200.00
       @reservations = []
     end # constructor
 

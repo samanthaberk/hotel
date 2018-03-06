@@ -36,4 +36,16 @@ describe "Reservation class" do
 
   end
 
+  describe "calculate_reservation_cost" do
+
+    it "returns the total cost of the reservation according to the days stayed" do
+      new_reservation = Hotel::Reservation.new({id: 1, room_num: 1, check_in: '15-03-2018', check_out: '17-03-2018'})
+
+      new_reservation.calculate_reservation_cost.must_equal 400.00
+      new_reservation.calculate_reservation_cost.must_be_instance_of Float
+
+    end
+
+  end
+
 end

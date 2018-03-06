@@ -72,26 +72,30 @@ describe "Booking Manager Class" do
 
   end # reserve_room
 
-  describe "display_reservations_list method" do
+  describe "display_reservations method" do
 
-    it "returns all reservation instances created" do
+    it "returns all reservation instances within the specified date range" do
 
       booking_manager = Hotel::BookingManager.new
 
       reservation_one = booking_manager.reserve_room('15-03-2018', '17-03-2018')
-      reservation_two = booking_manager.reserve_room('18-03-2018', '20-03-2018')
+      reservation_two = booking_manager.reserve_room('15-03-2018', '17-03-2018')
       reservation_three = booking_manager.reserve_room('21-03-2018', '23-03-2018')
 
-      booking_manager.display_reservations_list.must_include reservation_one
-      booking_manager.display_reservations_list.must_include reservation_two
-      booking_manager.display_reservations_list.must_include reservation_three
+      booking_manager.display_reservations('15-03-2018', '17-03-2018').must_include reservation_one
+      booking_manager.display_reservations('15-03-2018', '17-03-2018').must_include reservation_two
+      booking_manager.display_reservations('15-03-2018', '17-03-2018').wont_include reservation_three
     end
 
-    it "returns an empty array if no reservations have been made" do
+    it "returns an empty array if no reservations match the specified dates" do
 
       booking_manager = Hotel::BookingManager.new
-      booking_manager.display_reservations_list.must_be_empty
-      booking_manager.display_reservations_list.must_equal []
+
+      reservation_one = booking_manager.reserve_room('15-03-2018', '17-03-2018')
+      reservation_two = booking_manager.reserve_room('15-03-2018', '17-03-2018')
+
+      booking_manager.display_reservations('21-03-2018', '23-03-2018').must_be_empty
+      booking_manager.display_reservations('21-03-2018', '23-03-2018').must_equal []
 
     end
 

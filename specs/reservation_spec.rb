@@ -23,4 +23,17 @@ describe "Reservation class" do
 
   end # constructor
 
+  describe "duration_of_stay method" do
+
+    it "Adds the total number of days in the reservation, not including the check-out day" do
+      new_reservation = Hotel::Reservation.new({id: 1, room_num: 1, check_in: '15-03-2018', check_out: '17-03-2018'})
+
+      new_reservation.duration_of_stay.must_equal 2
+      new_reservation.duration_of_stay.must_be_instance_of Integer
+      new_reservation.duration_of_stay.wont_equal 3
+
+    end
+
+  end
+
 end

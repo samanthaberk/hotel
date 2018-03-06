@@ -23,8 +23,8 @@ module Hotel
 
     end # constructor
 
-    def update_reservation_list
-
+    def duration_of_stay
+      return (@check_out - @check_in).to_i
     end
 
   end # reservation class

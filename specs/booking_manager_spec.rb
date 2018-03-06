@@ -42,4 +42,32 @@ describe "Booking Manager Class" do
 
   end # display_room_list
 
+  describe "reserve_room method" do
+
+    before do
+      @booking_manager = Hotel::BookingManager.new
+      @new_reservation = @booking_manager.reserve_room('15-03-2018', '17-03-2018')
+    end
+
+    it "creates a new reservation instance" do
+      @new_reservation.must_be_instance_of Hotel::Reservation
+    end
+
+    it "selects a room between 1 and 20 for the reservation" do
+      @new_reservation.room_num.must_be :>, 0
+      @new_reservation.room_num.must_be :<, 21
+    end
+
+    it "assigns an id to the reservation based on the total number of reservations" do
+      reservation_one = @booking_manager.reserve_room('15-03-2018', '17-03-2018')
+      # reservation_two = @booking_manager.reserve_room('18-03-2018', '20-03-2018')
+      # reservation_three = @booking_manager.reserve_room('21-03-2018', '23-03-2018')
+
+      reservation_one.id.must_equal 1
+      # reservation_one.id.must_equal 2
+      # reservation_one.id.must_equal 3
+    end
+
+  end
+
 end

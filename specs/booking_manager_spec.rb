@@ -70,6 +70,31 @@ describe "Booking Manager Class" do
       reservation_three.id.must_equal 3
     end
 
-  end
+  end # reserve_room
+
+  describe "display_reservations_list method" do
+
+    it "returns all reservation instances created" do
+
+      booking_manager = Hotel::BookingManager.new
+
+      reservation_one = booking_manager.reserve_room('15-03-2018', '17-03-2018')
+      reservation_two = booking_manager.reserve_room('18-03-2018', '20-03-2018')
+      reservation_three = booking_manager.reserve_room('21-03-2018', '23-03-2018')
+
+      booking_manager.display_reservations_list.must_include reservation_one
+      booking_manager.display_reservations_list.must_include reservation_two
+      booking_manager.display_reservations_list.must_include reservation_three
+    end
+
+    it "returns an empty array if no reservations have been made" do
+
+      booking_manager = Hotel::BookingManager.new
+      booking_manager.display_reservations_list.must_be_empty
+      booking_manager.display_reservations_list.must_equal []
+
+    end
+
+  end # display_reservations_list
 
 end

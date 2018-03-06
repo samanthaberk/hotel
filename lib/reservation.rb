@@ -23,6 +23,10 @@ module Hotel
 
     end # constructor
 
+    def update_reservation_list
+
+    end
+
   end # reservation class
 
 end # hotel module

@@ -24,7 +24,10 @@ module Hotel
         check_out: check_out
       }
 
-      return Hotel::Reservation.new(reservation_data)
+      new_reservation = Hotel::Reservation.new(reservation_data)
+      @reservations.push(new_reservation)
+
+      return new_reservation
     end
 
   end # booking manager class
@@ -33,3 +36,7 @@ end # hotel module
 
 # booking_manager = Hotel::BookingManager.new
 # booking_manager.reserve_room('15-03-2018', '17-03-2018')
+#
+# new_reservation = Hotel::Reservation.new({id: 1, room_num: 34, check_in: '15-03-2018', check_out: '17-03-2018'})
+# new_reservation.update_reservation_list
+# puts @reservations

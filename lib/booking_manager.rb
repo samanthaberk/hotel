@@ -30,11 +30,11 @@ module Hotel
 
     end # load_rooms
 
-    def reserve_room(check_in, check_out)
+    def reserve_room(room_num, check_in, check_out)
       # load reservation data
       reservation_data = {
         id: @reservations.length + 1,
-        room_num: Array(1..TOTAL_ROOMS).sample,
+        room_num: room_num,
         check_in: check_in,
         check_out: check_out
       }
@@ -63,14 +63,9 @@ module Hotel
     end # def reserve room
 
     def display_available_rooms(check_in, check_out)
-      # CREATE ROOM CLASS
-      # Has a: number, booked_dates (an array of arrays), is_block?
-      # All data stored in a hash
-
-      # In BookingManager, create load_rooms METHOD
-      # Instantiate a room 20 times with no booked dates
-      # PUSH the room instances to an ARRAY
-      # Instantiate the ARRAY of ROOMS in booking_manager
+      available_rooms
+      # CREATE ROOM HASH containing a room_number and booked_dates (an array of arrays)
+        # Later add is_block?
 
       # DISPLAY_AVAILABLE_ROOMS METHOD
       # Create VARIABLE ARRAY called available_rooms to store available rooms for the given date parameters

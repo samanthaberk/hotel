@@ -63,28 +63,30 @@ module Hotel
     end # def reserve room
 
     def display_available_rooms(check_in, check_out)
-      available_rooms
-      # CREATE ROOM HASH containing a room_number and booked_dates (an array of arrays)
-        # Later add is_block?
+      # Check for validity of dates
+      if check_out < check_in
+        raise ArgumentError.new("Check-out date cannot be earlier than check-in.")
+      elsif check_out == check_in
+        raise ArgumentError.new("Check-in and check-out dates cannot be the same.")
+      end
 
-      # DISPLAY_AVAILABLE_ROOMS METHOD
-      # Create VARIABLE ARRAY called available_rooms to store available rooms for the given date parameters
-      # Find all dates you need to be available by calling duration, and adding 1 to check-in date as many times as the duration
-      # Save to VARIABLE ARRAY as requested_dates
-      # LOOP thru @rooms to look at each ROOM {room: 1, dates: [[10/30, 10/31], [11/02, 11/03, 11/04]], is_block?: false}
-      # LOOP thru each room hash and look at the booked dates
-      # If any of the requested_dates are present, do nothing
-      # ELSE push the room instance to the available_rooms array
-      # END
-      #END
-      #END
-      # RETURN available rooms
+      # Define date range to search for
+      requested_dates = (Date.parse(check_in)..Date.parse(check_out)).to_a
 
-    end
+      # Loop through all rooms and remove any that are booked during the date range
+      available_rooms = @rooms
+
+      available_rooms.each do |room|
+        if room[:booked_dates].find{|date| date.include?(requested_dates)}
+          available_rooms.delete(room)
+        end
+      end
+      return available_rooms
+    end #display_available_rooms
 
   end # booking manager class
 
 end # hotel module
 
 booking = Hotel::BookingManager.new
-print booking.rooms
+print booking.display_available_rooms('15-03-2018', '17-03-2018')

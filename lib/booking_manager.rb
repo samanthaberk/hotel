@@ -4,12 +4,12 @@ require 'pry'
 module Hotel
 
   class BookingManager
-    attr_accessor :rooms, :price, :reservations
+    attr_accessor :rooms, :reservations
 
     def initialize
       @rooms = Array(1..20)
       @reservations = []
-    end # constructor
+    end
 
     def display_room_list
       return @rooms
@@ -24,6 +24,7 @@ module Hotel
         check_out: check_out
       }
 
+      # use data to intantiate a new reservation and add it to the reservations list
       new_reservation = Reservation.new(reservation_data)
       @reservations.push(new_reservation)
 
@@ -31,13 +32,43 @@ module Hotel
     end
 
     def display_reservations(check_in, check_out)
+
+      # Create a variable to keep track of all reservations that match the specified dates
       matching_reservations = []
+
+      # Look at each reservation and add an instance to the above variable if the check-in and check-out dates match the given parameters
       @reservations.each do |reservation|
         if reservation.check_in == Date.parse(check_in) && reservation.check_out == Date.parse(check_out)
           matching_reservations << reservation
         end
       end
+
       return matching_reservations
+
+    end # def reserve room
+
+    def display_available_rooms(check_in, check_out)
+      # CREATE ROOM CLASS
+        # Has a: number, booked_dates (an array of arrays), is_block?
+          # All data stored in a hash
+
+      # In BookingManager, create load_rooms METHOD
+        # Instantiate a room that is available 20 times
+        # PUSH the room instances to an ARRAY
+        # Instantiate the ARRAY of ROOMS in booking_manager
+
+      # DISPLAY_AVAILABLE_ROOMS METHOD
+        # Create VARIABLE ARRAY called available_rooms to store available rooms for the given date parameters
+        # Find all dates you need to be available by calling duration, and adding 1 to check-in date as many times as the duration
+          # Save to VARIABLE ARRAY as requested_dates
+        # LOOP thru @rooms to look at each ROOM {room: 1, dates: [[10/30, 10/31], [11/02, 11/03, 11/04]], is_block?: false}
+          # LOOP thru each room hash and look at the booked dates
+            # If any of the requested_dates are present, do nothing
+              # ELSE push the room instance to the available_rooms array
+            # END
+          #END
+        #END
+      # RETURN available rooms
 
     end
 

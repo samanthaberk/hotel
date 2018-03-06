@@ -21,7 +21,6 @@ module Hotel
       elsif @check_out == @check_in
         raise ArgumentError.new("Check-in and check-out dates cannot be the same.")
       end
-
     end # constructor
 
     def duration_of_stay

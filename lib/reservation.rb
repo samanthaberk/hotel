@@ -16,7 +16,7 @@ module Hotel
       @nightly_rate = 200.00
 
       # Check for validity of room number and dates
-      if @id > 20 || @id < 1
+      if @room_num > 20 || @room_num < 1
         raise ArgumentError.new("Invalid room number.")
       elsif @check_out < @check_in
         raise ArgumentError.new("Check-out date cannot be earlier than check-in.")

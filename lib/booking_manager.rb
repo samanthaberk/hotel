@@ -41,7 +41,7 @@ module Hotel
         check_in: Date.parse(check_in),
         check_out: Date.parse(check_out),
       }
-
+      
       # use data to intantiate a new reservation and add it to the reservations list
       new_reservation = Reservation.new(reservation_data)
       @reservations.push(new_reservation)
@@ -79,7 +79,7 @@ module Hotel
 
       # Define date range to search for
       requested_dates = Set.new(Date.parse(check_in)...Date.parse(check_out))
-      # Loop through all rooms and remove any that are booked during the date range
+      # Loop through all rooms add any that are NOT booked during the date range to available_rooms
       available_rooms = []
       @rooms.each do |room|
         if Set.new(room[:booked_dates].flatten).intersect?(requested_dates) == false

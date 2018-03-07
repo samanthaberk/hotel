@@ -56,7 +56,7 @@ describe "Booking Manager Class" do
       new_reservation.must_be_instance_of Hotel::Reservation
     end
 
-    it "" do
+    it "raises an exception if the user tries to reserve an unavailable room" do
 
     end
   end # reserve_room

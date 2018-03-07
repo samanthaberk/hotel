@@ -1,5 +1,6 @@
 require 'date'
 require 'pry'
+require_relative 'reservation'
 
 module Hotel
 
@@ -35,13 +36,17 @@ module Hotel
       reservation_data = {
         id: @reservations.length + 1,
         room_num: room_num,
-        check_in: check_in,
-        check_out: check_out
+        check_in: Date.parse(check_in),
+        check_out: Date.parse(check_out),
       }
 
       # use data to intantiate a new reservation and add it to the reservations list
       new_reservation = Reservation.new(reservation_data)
       @reservations.push(new_reservation)
+
+      # add reservation to the room's hash
+      dates = (Date.parse(check_in)..Date.parse(check_out)).to_a
+      @rooms[room_num - 1][:booked_dates].push(dates)
 
       return new_reservation
     end
@@ -89,4 +94,7 @@ module Hotel
 end # hotel module
 
 booking = Hotel::BookingManager.new
+booking.reserve_room(1, '15-03-2018', '17-03-2018')
+booking.reserve_room(2, '15-03-2018', '17-03-2018')
+booking.reserve_room(3, '15-03-2018', '17-03-2018')
 print booking.display_available_rooms('15-03-2018', '17-03-2018')

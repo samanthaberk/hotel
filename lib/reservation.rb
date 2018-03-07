@@ -1,8 +1,7 @@
-############ ADD ROOM'S RESERVATION TO ITS HASH AFTER MAKING A NEW RESERVATION ############
 ############ ARGUMENT ERROR IF YOU TRY TO RESERVE A ROOM THAT IS NOT AVAILABLE ############
 
 require 'date'
-require_relative 'booking_manager'
+# require_relative 'booking_manager'
 
 module Hotel
 
@@ -12,8 +11,8 @@ module Hotel
     def initialize(reservation_data)
       @id = reservation_data[:id]
       @room_num = reservation_data[:room_num]
-      @check_in = Date.parse(reservation_data[:check_in])
-      @check_out = Date.parse(reservation_data[:check_out])
+      @check_in = reservation_data[:check_in]
+      @check_out = reservation_data[:check_out]
       @nightly_rate = 200.00
 
       # Check for validity of room number and dates
@@ -24,6 +23,7 @@ module Hotel
       elsif @check_out == @check_in
         raise ArgumentError.new("Check-in and check-out dates cannot be the same.")
       end
+
     end # constructor
 
     def duration_of_stay

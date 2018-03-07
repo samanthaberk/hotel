@@ -18,13 +18,19 @@ module Hotel
       # Check for validity of room number and dates
       if @room_num > 20 || @room_num < 1
         raise ArgumentError.new("Invalid room number.")
-      elsif @check_out < @check_in
-        raise ArgumentError.new("Check-out date cannot be earlier than check-in.")
-      elsif @check_out == @check_in
-        raise ArgumentError.new("Check-in and check-out dates cannot be the same.")
       end
 
+      check_date_validity(@check_out, @check_in)
+
     end # constructor
+
+    def check_date_validity(check_out, check_in)
+      if check_out < check_in
+        raise ArgumentError.new("Check-out date cannot be earlier than check-in.")
+      elsif check_out == check_in
+        raise ArgumentError.new("Check-in and check-out dates cannot be the same.")
+      end
+    end
 
     def duration_of_stay
       return (Date.parse(@check_out) - Date.parse(@check_in)).to_i

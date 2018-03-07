@@ -87,8 +87,8 @@ describe "Booking Manager Class" do
 
       booking_manager = Hotel::BookingManager.new
 
-      reservation_one = booking_manager.reserve_room(1, '15-03-2018', '17-03-2018')
-      reservation_two = booking_manager.reserve_room(2, '15-03-2018', '17-03-2018')
+      booking_manager.reserve_room(1, '15-03-2018', '17-03-2018')
+      booking_manager.reserve_room(2, '15-03-2018', '17-03-2018')
 
       booking_manager.display_reservations('21-03-2018', '23-03-2018').must_be_empty
       booking_manager.display_reservations('21-03-2018', '23-03-2018').must_equal []
@@ -124,7 +124,7 @@ describe "Booking Manager Class" do
     end
 
     it "returns all rooms in the hotel if there are no reservations for the specified dates" do
-      @booking.display_available_rooms('15-03-2018', '17-03-2018').must_equal @rooms
+      @booking.display_available_rooms('15-03-2018', '17-03-2018').length.must_equal 20
     end
 
     it "returns an empty array if there are no available rooms" do

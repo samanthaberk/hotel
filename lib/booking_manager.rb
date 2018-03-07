@@ -1,12 +1,14 @@
 require 'date'
 require 'pry'
+require 'awesome_print'
 require_relative 'reservation'
+require 'set'
 
 module Hotel
 
   class BookingManager
     TOTAL_ROOMS = 20
-    attr_accessor :rooms, :reservations
+    attr_reader :rooms, :reservations
 
     def initialize
       @rooms = load_rooms # an array of hashes containing room info
@@ -31,7 +33,7 @@ module Hotel
 
     end # load_rooms
 
-    def reserve_room(room_num, check_in, check_out)
+    def reserve_room(room_num, check_in, check_out) # change hash to keyword arguments
       # load reservation data
       reservation_data = {
         id: @reservations.length + 1,
@@ -45,7 +47,7 @@ module Hotel
       @reservations.push(new_reservation)
 
       # add reservation to the room's hash
-      dates = (Date.parse(check_in)..Date.parse(check_out)).to_a
+      dates = (Date.parse(check_in)...Date.parse(check_out)).to_a
       @rooms[room_num - 1][:booked_dates].push(dates)
 
       return new_reservation
@@ -69,21 +71,19 @@ module Hotel
 
     def display_available_rooms(check_in, check_out)
       # Check for validity of dates
-      if check_out < check_in
+      if Date.parse(check_out) < Date.parse(check_in)
         raise ArgumentError.new("Check-out date cannot be earlier than check-in.")
       elsif check_out == check_in
         raise ArgumentError.new("Check-in and check-out dates cannot be the same.")
       end
 
       # Define date range to search for
-      requested_dates = (Date.parse(check_in)..Date.parse(check_out)).to_a
-
+      requested_dates = Set.new(Date.parse(check_in)...Date.parse(check_out))
       # Loop through all rooms and remove any that are booked during the date range
-      available_rooms = @rooms
-
-      available_rooms.each do |room|
-        if room[:booked_dates].find{|date| date.include?(requested_dates)}
-          available_rooms.delete(room)
+      available_rooms = []
+      @rooms.each do |room|
+        if Set.new(room[:booked_dates].flatten).intersect?(requested_dates) == false
+          available_rooms << room
         end
       end
       return available_rooms
@@ -93,8 +93,9 @@ module Hotel
 
 end # hotel module
 
-booking = Hotel::BookingManager.new
-booking.reserve_room(1, '15-03-2018', '17-03-2018')
-booking.reserve_room(2, '15-03-2018', '17-03-2018')
-booking.reserve_room(3, '15-03-2018', '17-03-2018')
-print booking.display_available_rooms('15-03-2018', '17-03-2018')
+# booking = Hotel::BookingManager.new
+# booking.reserve_room(1, '15-03-2018', '17-03-2018')
+# booking.reserve_room(1, '18-03-2018', '19-03-2018')
+# booking.reserve_room(2, '15-03-2018', '20-03-2018')
+# booking.reserve_room(2, '20-03-2018', '21-03-2018')
+# ap booking.display_available_rooms('15-03-2018', '17-03-2018')

@@ -41,7 +41,7 @@ module Hotel
         check_in: Date.parse(check_in),
         check_out: Date.parse(check_out),
       }
-      
+
       # use data to intantiate a new reservation and add it to the reservations list
       new_reservation = Reservation.new(reservation_data)
       @reservations.push(new_reservation)

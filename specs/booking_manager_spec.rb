@@ -121,27 +121,9 @@ describe "Booking Manager Class" do
     end
 
     it "returns an empty array if there are no available rooms" do
-      @booking.reserve_room(1, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(2, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(3, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(4, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(5, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(6, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(7, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(8, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(9, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(10, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(11, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(12, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(13, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(14, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(15, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(16, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(17, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(18, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(19, '15-03-2018', '17-03-2018')
-      @booking.reserve_room(20, '15-03-2018', '17-03-2018')
-
+      20.times do |i|
+        @booking.reserve_room(i+1, '15-03-2018', '17-03-2018')
+      end
       @booking.display_available_rooms('15-03-2018', '17-03-2018').must_equal []
 
     end

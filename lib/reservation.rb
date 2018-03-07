@@ -39,6 +39,6 @@ module Hotel
 
 end # hotel module
 
-new_reservation = Hotel::Reservation.new({id: 1, room_num: 1, check_in: '15-03-2018', check_out: '17-03-2018'})
-print new_reservation.room_num
-print new_reservation.check_in
+# new_reservation = Hotel::Reservation.new({id: 1, room_num: 1, check_in: '15-03-2018', check_out: '17-03-2018'})
+# print new_reservation.room_num
+# print new_reservation.check_in

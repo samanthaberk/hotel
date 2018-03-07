@@ -56,15 +56,8 @@ describe "Booking Manager Class" do
       new_reservation.must_be_instance_of Hotel::Reservation
     end
 
-    it "assigns an id to the reservation based on the total number of reservations" do
-      reservation_one = @booking_manager.reserve_room(1, '15-03-18', '17-03-2018')
-      reservation_one.id.must_equal 1
+    it "" do
 
-      reservation_two = @booking_manager.reserve_room(2, '18-03-2018', '20-03-2018')
-      reservation_two.id.must_equal 2
-
-      reservation_three = @booking_manager.reserve_room(3, '21-03-2018', '23-03-2018')
-      reservation_three.id.must_equal 3
     end
   end # reserve_room
 

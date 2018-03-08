@@ -1,11 +1,12 @@
 ############ ARGUMENT ERROR IF YOU TRY TO RESERVE A ROOM THAT IS NOT AVAILABLE ############
 
 require 'date'
-# require_relative 'booking_manager'
+require_relative 'validation'
+require_relative 'booking_manager'
 
 module Hotel
 
-  class Reservation
+  class Reservation < Validation
     attr_reader :id, :room_num, :check_in, :check_out, :nightly_rate
 
     def initialize(reservation_data)
@@ -23,14 +24,6 @@ module Hotel
       check_date_validity(@check_out, @check_in)
 
     end # constructor
-
-    def check_date_validity(check_out, check_in)
-      if check_out < check_in
-        raise ArgumentError.new("Check-out date cannot be earlier than check-in.")
-      elsif check_out == check_in
-        raise ArgumentError.new("Check-in and check-out dates cannot be the same.")
-      end
-    end
 
     def duration_of_stay
       return (Date.parse(@check_out) - Date.parse(@check_in)).to_i

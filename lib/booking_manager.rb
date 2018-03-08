@@ -1,12 +1,13 @@
 require 'date'
 require 'pry'
-require 'awesome_print'
-require_relative 'reservation'
 require 'set' # this allows me to compare 2 sets of data and find where they intersect
+require 'awesome_print'
+require_relative 'validation'
+require_relative 'reservation'
 
 module Hotel
 
-  class BookingManager
+  class BookingManager < Validation
     TOTAL_ROOMS = 20
     attr_reader :rooms, :reservations
 

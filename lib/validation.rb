@@ -18,6 +18,14 @@ module Hotel
       end
     end
 
+    def check_block_validity(num_rooms)
+      if num_rooms > 5
+        raise ArgumentError.new("Cannot set more than 5 rooms in a block")
+      elsif num_rooms < 2
+        raise ArgumentError.new("Must set a minimum of 2 rooms in a block")
+      end
+    end
+
   end # validation class
 
 end # hotel module

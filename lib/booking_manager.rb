@@ -96,9 +96,17 @@ module Hotel
     end #display_available_rooms
 
     def set_block(num_rooms, check_in, check_out)
+      # Check validity of request
+      check_block_validity(num_rooms)
+      check_date_validity(check_out, check_in)
+
       # Find available rooms for the block
       available_rooms = display_available_rooms(check_in, check_out)
-      blocked_rooms = available_rooms.sample(num_rooms)
+      if available_rooms.length >= num_rooms
+        blocked_rooms = available_rooms.sample(num_rooms)
+      else
+        raise ArgumentError.new("There are only #{available_rooms.length} rooms available on these dates.")
+      end
 
       # Load block data
       block_data = {
@@ -107,14 +115,19 @@ module Hotel
         nightly_rate: 175.00
       }
 
+      # use data to intantiate a new block and add it to the block list
+      new_block = Block.new(block_data)
+      @blocks.push(new_block)
+
+      return new_block
     end
 
   end # booking manager class
 
 end # hotel module
 
-booking = Hotel::BookingManager.new
-print booking.reserve_block(5, '15-03-2018', '17-03-2018')
+# booking = Hotel::BookingManager.new
+# print booking.set_block(5, '15-03-2018', '17-03-2018')
 # print booking.reserve_room(1, '15-03-2018', '17-03-2018')
 # booking.reserve_room(2, '15-03-2018', '20-03-2018')
 # booking.reserve_room(2, '20-03-2018', '21-03-2018')

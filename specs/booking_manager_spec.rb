@@ -177,24 +177,31 @@ describe "Booking Manager Class" do
     end
   end # display_available_rooms
 
-  describe "reserve_block method" do
+  describe "set_block method" do
 
     before do
       @booking_manager = Hotel::BookingManager.new
     end
 
     it "creates a new block instance" do
-      new_block = @booking_manager.reserve_block(5, '05-05-2018', '08-05-2018')
+      new_block = @booking_manager.set_block(5, '05-05-2018', '08-05-2018')
       new_block.must_be_instance_of Hotel::Block
     end
 
     it "raises an exception if the user attempts to reserve a block of more than 5 rooms" do
-      proc { @booking_manager.reserve_block(10, '05-05-2018', '08-05-2018') }.must_raise ArgumentError
+      proc { @booking_manager.set_block(10, '05-05-2018', '08-05-2018') }.must_raise ArgumentError
     end
 
     it "raises an exception if the user attempts to reserve a block of less than 2 rooms" do
-      proc { @booking_manager.reserve_block(1, '05-05-2018', '08-05-2018') }.must_raise ArgumentError
-      proc { @booking_manager.reserve_block(-1, '05-05-2018', '08-05-2018') }.must_raise ArgumentError
+      proc { @booking_manager.set_block(1, '05-05-2018', '08-05-2018') }.must_raise ArgumentError
+      proc { @booking_manager.set_block(-1, '05-05-2018', '08-05-2018') }.must_raise ArgumentError
+    end
+
+    it "raises an exception if there are not enough rooms available for the block" do
+      16.times do |i|
+        @booking_manager.reserve_room(i + 1, '15-03-2018', '17-03-2018')
+      end
+      proc { @booking_manager.set_block(5, '15-03-2018', '17-03-2018')}.must_raise ArgumentError
     end
 
   end

@@ -95,7 +95,7 @@ module Hotel
       return available_rooms
     end #display_available_rooms
 
-    def reserve_block(num_rooms, check_in, check_out)
+    def set_block(num_rooms, check_in, check_out)
       # Find available rooms for the block
       available_rooms = display_available_rooms(check_in, check_out)
       blocked_rooms = available_rooms.sample(num_rooms)

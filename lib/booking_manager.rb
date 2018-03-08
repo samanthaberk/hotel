@@ -4,6 +4,7 @@ require 'set' # this allows me to compare 2 sets of data and find where they int
 require 'awesome_print'
 require_relative 'validation'
 require_relative 'reservation'
+require_relative 'block'
 
 module Hotel
 
@@ -13,7 +14,8 @@ module Hotel
 
     def initialize
       @rooms = load_rooms # an array of hashes containing room info
-      @reservations = [] # starts out empty
+      @reservations = []
+      @blocks = []
     end
 
     def display_room_list
@@ -63,7 +65,6 @@ module Hotel
     end
 
     def display_reservations(check_in, check_out)
-
       # Create a variable to keep track of all reservations that match the specified dates
       matching_reservations = []
 
@@ -94,12 +95,26 @@ module Hotel
       return available_rooms
     end #display_available_rooms
 
+    def reserve_block(num_rooms, check_in, check_out)
+      # Find available rooms for the block
+      available_rooms = display_available_rooms(check_in, check_out)
+      blocked_rooms = available_rooms.sample(num_rooms)
+
+      # Load block data
+      block_data = {
+        id: "B" + (@blocks.length + 1).to_s,
+        blocked_rooms: blocked_rooms,
+        nightly_rate: 175.00
+      }
+
+    end
+
   end # booking manager class
 
 end # hotel module
 
-# booking = Hotel::BookingManager.new
-# print booking.reserve_room(1, '15-03-2018', '17-03-2018')
+booking = Hotel::BookingManager.new
+print booking.reserve_block(5, '15-03-2018', '17-03-2018')
 # print booking.reserve_room(1, '15-03-2018', '17-03-2018')
 # booking.reserve_room(2, '15-03-2018', '20-03-2018')
 # booking.reserve_room(2, '20-03-2018', '21-03-2018')

@@ -124,9 +124,27 @@ describe "Booking Manager Class" do
         @booking.reserve_room(i+1, '15-03-2018', '17-03-2018')
       end
       @booking.display_available_rooms('15-03-2018', '17-03-2018').must_equal []
-
     end
 
+    it "does not affect the availability array if there is a reservation completely before the requested dates" do
+      @booking.reserve_room(1, '15-03-2018', '17-03-2018')
+      @booking.display_available_rooms('15-04-2018', '17-04-2018').must_include 1
+    end
+
+    it "does not affect the availability array if there is a reservation completely after the requested dates" do
+      @booking.reserve_room(1, '20-05-2018', '21-05-2018')
+      @booking.display_available_rooms('15-04-2018', '17-04-2018').must_include 1
+    end
+
+    it "does not affect the availability array if there is a reservation that ends on the requested check-in date" do
+      @booking.reserve_room(1, '13-04-2018', '15-04-2018')
+      @booking.display_available_rooms('15-04-2018', '17-04-2018').must_include 1
+    end
+
+    it "does not affect the availability array if there is a reservation that starts on the requested check-out date" do
+      @booking.reserve_room(1, '17-04-2018', '20-04-2018')
+      @booking.display_available_rooms('15-04-2018', '17-04-2018').must_include 1
+    end
   end # display_available_rooms
 
 end

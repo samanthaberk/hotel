@@ -145,6 +145,16 @@ describe "Booking Manager Class" do
       @booking.reserve_room(1, '17-04-2018', '20-04-2018')
       @booking.display_available_rooms('15-04-2018', '17-04-2018').must_include 1
     end
+
+    it "omits all rooms with reservations within the requested date range if it spans several small reservations" do
+      @booking.reserve_room(1, '17-04-2018', '20-04-2018')
+      @booking.reserve_room(2, '16-04-2018', '17-04-2018')
+      @booking.reserve_room(3, '23-04-2018', '25-04-2018')
+
+      @booking.display_available_rooms('15-04-2018', '25-04-2018').wont_include 1
+      @booking.display_available_rooms('15-04-2018', '25-04-2018').wont_include 2
+      @booking.display_available_rooms('15-04-2018', '25-04-2018').wont_include 3
+    end
   end # display_available_rooms
 
 end

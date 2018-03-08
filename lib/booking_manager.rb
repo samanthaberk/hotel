@@ -35,6 +35,11 @@ module Hotel
     end # load_rooms
 
     def reserve_room(room_num, check_in, check_out) # change hash to keyword arguments
+
+      available_rooms = display_available_rooms(check_in, check_out)
+      if available_rooms.include?(room_num) == false
+        raise ArgumentError.new("Room is not available for the requested dates")
+      end
       # load reservation data
       reservation_data = {
         id: @reservations.length + 1,
@@ -78,13 +83,15 @@ module Hotel
         raise ArgumentError.new("Check-in and check-out dates cannot be the same.")
       end
 
+      # check_date_validity(check_in, check_out) WHY DOESN'T THIS WORK?
+
       # Define date range to search for
       requested_dates = Set.new(Date.parse(check_in)...Date.parse(check_out))
       # Loop through all rooms add any that are NOT booked during the date range to available_rooms
       available_rooms = []
       @rooms.each do |room|
         if Set.new(room[:booked_dates].flatten).intersect?(requested_dates) == false
-          available_rooms << room
+          available_rooms << room[:room_num]
         end
       end
       return available_rooms
@@ -95,8 +102,8 @@ module Hotel
 end # hotel module
 
 # booking = Hotel::BookingManager.new
-# booking.reserve_room(1, '15-03-2018', '17-03-2018')
-# booking.reserve_room(1, '18-03-2018', '19-03-2018')
+# print booking.reserve_room(1, '15-03-2018', '17-03-2018')
+# print booking.reserve_room(1, '15-03-2018', '17-03-2018')
 # booking.reserve_room(2, '15-03-2018', '20-03-2018')
 # booking.reserve_room(2, '20-03-2018', '21-03-2018')
 # ap booking.display_available_rooms('15-03-2018', '17-03-2018')

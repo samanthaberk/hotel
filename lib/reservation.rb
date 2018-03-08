@@ -2,7 +2,7 @@
 
 require 'date'
 require_relative 'validation'
-require_relative 'booking_manager'
+# require_relative 'booking_manager'
 
 module Hotel
 

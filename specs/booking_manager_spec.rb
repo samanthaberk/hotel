@@ -57,7 +57,8 @@ describe "Booking Manager Class" do
     end
 
     it "raises an exception if the user tries to reserve an unavailable room" do
-
+      new_reservation = @booking_manager.reserve_room(1, '15-03-2018', '17-03-2018')
+      proc{ @booking_manager.reserve_room(1, '15-03-2018', '17-03-2018') }.must_raise ArgumentError
     end
   end # reserve_room
 

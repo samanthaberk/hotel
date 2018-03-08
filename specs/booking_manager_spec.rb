@@ -104,15 +104,15 @@ describe "Booking Manager Class" do
       proc{ @booking.display_available_rooms('17-03-2018', '15-03-2018')}.must_raise ArgumentError
     end
 
-    it "returns an array of all available rooms" do
+    it "returns an array of all available rooms and excludes rooms reserved on the same dates" do
       reserved_one = @booking.reserve_room(1, '15-03-2018', '17-03-2018')
       reserved_two = @booking.reserve_room(2, '15-03-2018', '17-03-2018')
 
       @booking.display_available_rooms('15-03-2018', '17-03-2018').must_be_instance_of Array
       @booking.display_available_rooms('15-03-2018', '17-03-2018').length.must_equal 18
 
-      @booking.display_available_rooms('15-03-2018', '17-03-2018').wont_include reserved_one
-      @booking.display_available_rooms('15-03-2018', '17-03-2018').wont_include reserved_two
+      @booking.display_available_rooms('15-03-2018', '17-03-2018').wont_include 1
+      @booking.display_available_rooms('15-03-2018', '17-03-2018').wont_include 2
     end
 
     it "returns all rooms in the hotel if there are no reservations for the specified dates" do
@@ -124,6 +124,16 @@ describe "Booking Manager Class" do
         @booking.reserve_room(i+1, '15-03-2018', '17-03-2018')
       end
       @booking.display_available_rooms('15-03-2018', '17-03-2018').must_equal []
+    end
+
+    it "excludes a room from the availability list if it has a reservation that overlaps with the requested dates at the front" do
+      @booking.reserve_room(1, '15-03-2018', '17-03-2018')
+      @booking.display_available_rooms('15-03-2018', '25-03-2018').wont_include 1
+    end
+
+    it "excludes a room from the availability list if it has a reservation that overlaps with the requested dates at the back" do
+      @booking.reserve_room(1, '20-03-2018', '25-03-2018')
+      @booking.display_available_rooms('15-03-2018', '25-03-2018').wont_include 1
     end
 
     it "does not affect the availability array if there is a reservation completely before the requested dates" do

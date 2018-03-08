@@ -126,14 +126,24 @@ describe "Booking Manager Class" do
       @booking.display_available_rooms('15-03-2018', '17-03-2018').must_equal []
     end
 
-    it "excludes a room from the availability list if it has a reservation that overlaps with the requested dates at the front" do
+    it "excludes a room if it has a reservation that overlaps with the requested dates at the front" do
       @booking.reserve_room(1, '15-03-2018', '17-03-2018')
       @booking.display_available_rooms('15-03-2018', '25-03-2018').wont_include 1
     end
 
-    it "excludes a room from the availability list if it has a reservation that overlaps with the requested dates at the back" do
+    it "excludes a room if it has a reservation that overlaps with the requested dates at the back" do
       @booking.reserve_room(1, '20-03-2018', '25-03-2018')
       @booking.display_available_rooms('15-03-2018', '25-03-2018').wont_include 1
+    end
+
+    it "excludes a room if it has an exisiting reservation that is completely contained in the requested dates" do
+      @booking.reserve_room(1, '20-03-2018', '25-03-2018')
+      @booking.display_available_rooms('15-03-2018', '30-03-2018').wont_include 1
+    end
+
+    it "excludes a room if it has an exisiting reservation that completely contains the requested dates" do
+      @booking.reserve_room(1, '15-03-2018', '30-03-2018')
+      @booking.display_available_rooms('20-03-2018', '25-03-2018').wont_include 1
     end
 
     it "does not affect the availability array if there is a reservation completely before the requested dates" do

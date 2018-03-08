@@ -26,7 +26,8 @@ module Hotel
       TOTAL_ROOMS.times do |room|
         rooms << {
           room_num: room + 1,
-          booked_dates: []
+          booked_dates: [],
+          is_block?: false
         }
       end
 
@@ -36,11 +37,13 @@ module Hotel
 
     def reserve_room(room_num, check_in, check_out) # change hash to keyword arguments
 
+      # check if the room is available on the requested dates
       available_rooms = display_available_rooms(check_in, check_out)
       if available_rooms.include?(room_num) == false
         raise ArgumentError.new("Room is not available for the requested dates")
       end
-      # load reservation data
+
+      # if it is available, load reservation data
       reservation_data = {
         id: @reservations.length + 1,
         room_num: room_num,
@@ -76,14 +79,8 @@ module Hotel
     end # def reserve room
 
     def display_available_rooms(check_in, check_out)
-      # Check for validity of dates
-      if Date.parse(check_out) < Date.parse(check_in)
-        raise ArgumentError.new("Check-out date cannot be earlier than check-in.")
-      elsif check_out == check_in
-        raise ArgumentError.new("Check-in and check-out dates cannot be the same.")
-      end
-
-      # check_date_validity(check_in, check_out) WHY DOESN'T THIS WORK?
+      # Confirm valid dates
+      check_date_validity(check_out, check_in)
 
       # Define date range to search for
       requested_dates = Set.new(Date.parse(check_in)...Date.parse(check_out))

@@ -107,14 +107,12 @@ describe "Booking Manager Class" do
     it "returns an array of all available rooms" do
       reserved_one = @booking.reserve_room(1, '15-03-2018', '17-03-2018')
       reserved_two = @booking.reserve_room(2, '15-03-2018', '17-03-2018')
-      reserved_three = @booking.reserve_room(3, '15-03-2018', '17-03-2018')
 
       @booking.display_available_rooms('15-03-2018', '17-03-2018').must_be_instance_of Array
-      @booking.display_available_rooms('15-03-2018', '17-03-2018').length.must_equal 17
+      @booking.display_available_rooms('15-03-2018', '17-03-2018').length.must_equal 18
 
       @booking.display_available_rooms('15-03-2018', '17-03-2018').wont_include reserved_one
       @booking.display_available_rooms('15-03-2018', '17-03-2018').wont_include reserved_two
-      @booking.display_available_rooms('15-03-2018', '17-03-2018').wont_include reserved_three
     end
 
     it "returns all rooms in the hotel if there are no reservations for the specified dates" do

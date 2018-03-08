@@ -1,5 +1,3 @@
-############ ARGUMENT ERROR IF YOU TRY TO RESERVE A ROOM THAT IS NOT AVAILABLE ############
-
 require 'date'
 require_relative 'validation'
 # require_relative 'booking_manager'

@@ -97,11 +97,11 @@ describe "Booking Manager Class" do
     end
 
     it "raises an exception if the check-in date is after the check-out date" do
-      proc{ @booking.display_available_rooms('17-03-2018', '15-03-2018')}.must_raise ArgumentError
+      proc{ @booking.display_available_rooms('17-03-2018', '15-03-2018') }.must_raise ArgumentError
     end
 
     it "raises an exception if the check-in and check_out dates are the same" do
-      proc{ @booking.display_available_rooms('17-03-2018', '15-03-2018')}.must_raise ArgumentError
+      proc{ @booking.display_available_rooms('17-03-2018', '15-03-2018') }.must_raise ArgumentError
     end
 
     it "returns an array of all available rooms and excludes rooms reserved on the same dates" do
@@ -175,6 +175,17 @@ describe "Booking Manager Class" do
       @booking.display_available_rooms('15-04-2018', '25-04-2018').wont_include 2
       @booking.display_available_rooms('15-04-2018', '25-04-2018').wont_include 3
     end
+
+    it "does not inlcude rooms that have been blocked" do
+      @booking.reserve_room(1, '15-03-2018', '17-03-2018')
+      @booking.set_block(3, '15-03-2018', '17-03-2018')
+
+      @booking.display_available_rooms('15-03-2018', '17-03-2018').wont_include 1
+      @booking.display_available_rooms('15-03-2018', '17-03-2018').wont_include 2
+      @booking.display_available_rooms('15-03-2018', '17-03-2018').wont_include 3
+      @booking.display_available_rooms('15-03-2018', '17-03-2018').wont_include 4
+    end
+
   end # display_available_rooms
 
   describe "set_block method" do

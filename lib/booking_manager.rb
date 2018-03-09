@@ -144,18 +144,18 @@ module Hotel
       return new_block
     end
 
-    def reserve_blocked_room(block_id)
-      @blocks
-    end
+    # def reserve_blocked_room(block_id)
+    #   @blocks
+    # end
 
   end # booking manager class
 
 end # hotel module
 
-booking = Hotel::BookingManager.new
-booking.reserve_room(1, '15-03-2018', '17-03-2018')
-ap booking.set_block(3, '15-03-2018', '18-03-2018')
-ap booking.display_available_rooms('15-03-2018', '17-03-2018')
+# booking = Hotel::BookingManager.new
+# booking.reserve_room(1, '15-03-2018', '17-03-2018')
+# ap booking.set_block(3, '15-03-2018', '18-03-2018')
+# ap booking.display_available_rooms('15-03-2018', '17-03-2018')
 
 # booking.reserve_room(2, '15-03-2018', '17-03-2018')
 

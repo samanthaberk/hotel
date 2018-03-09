@@ -85,15 +85,30 @@ module Hotel
 
       # Define date range to search for
       requested_dates = Set.new(Date.parse(check_in)...Date.parse(check_out))
+
       # Loop through all rooms add any that are NOT booked during the date range to available_rooms
       available_rooms = []
       @rooms.each do |room|
-        if Set.new(room[:booked_dates].flatten).intersect?(requested_dates) == false
+        if !reserved_for_dates?(room, requested_dates) && !blocked_for_dates?(room, requested_dates)
           available_rooms << room[:room_num]
         end
       end
+
       return available_rooms
     end #display_available_rooms
+
+    def reserved_for_dates?(room, requested_dates)
+      Set.new(room[:booked_dates].flatten).intersect?(requested_dates)
+    end
+
+    def blocked_for_dates?(room, requested_dates)
+      @blocks.each do |block|
+        if Set.new(block.dates).intersect?(requested_dates) && block.rooms.include?(room[:room_num])
+          return true
+        end
+      end
+      return false
+    end
 
     def set_block(num_rooms, check_in, check_out)
       # Check validity of request
@@ -118,7 +133,8 @@ module Hotel
       block_data = {
         id: "B" + (@blocks.length + 1).to_s,
         rooms: blocked_rooms,
-        nightly_rate: 175.00
+        nightly_rate: 175.00,
+        dates: Date.parse(check_in)...Date.parse(check_out)
       }
 
       # use data to intantiate a new block and add it to the block list
@@ -128,14 +144,19 @@ module Hotel
       return new_block
     end
 
+    def reserve_blocked_room(block_id)
+      @blocks
+    end
+
   end # booking manager class
 
 end # hotel module
 
-# booking = Hotel::BookingManager.new
-# print booking.rooms[0][:is_block]
-# booking.reserve_room(1, '15-03-2018', '17-03-2018')
-# new_block = booking.set_block(5, '15-03-2018', '17-03-2018')
-# booking.reserve_room(2, '15-03-2018', '20-03-2018')
-# booking.reserve_room(2, '20-03-2018', '21-03-2018')
-# ap booking.display_available_rooms('15-03-2018', '17-03-2018')
+booking = Hotel::BookingManager.new
+booking.reserve_room(1, '15-03-2018', '17-03-2018')
+ap booking.set_block(3, '15-03-2018', '18-03-2018')
+ap booking.display_available_rooms('15-03-2018', '17-03-2018')
+
+# booking.reserve_room(2, '15-03-2018', '17-03-2018')
+
+# ap booking.rooms[0][:is_block]

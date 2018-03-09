@@ -215,11 +215,11 @@ describe "Booking Manager Class" do
       proc { @booking_manager.set_block(5, '15-03-2018', '17-03-2018')}.must_raise ArgumentError
     end
 
-    it "changes the is_block status of each room in the block to true" do
-      new_block = @booking_manager.set_block(3, '15-03-2018', '17-03-2018')
-      @booking_manager.rooms[0...3].each do |room|
-        room[:is_block].must_equal TRUE
-      end
+    it "does not allow a blocked room to be included in another block for the same dates" do
+      first_block = @booking_manager.set_block(5, '05-05-2018', '08-05-2018')
+      second_block = @booking_manager.set_block(5, '05-05-2018', '08-05-2018')
+
+      second_block.rooms.wont_include first_block.rooms
     end
 
   end # set_block method

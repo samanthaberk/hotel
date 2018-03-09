@@ -152,9 +152,11 @@ module Hotel
 
 end # hotel module
 
-# booking = Hotel::BookingManager.new
+booking = Hotel::BookingManager.new
 # booking.reserve_room(1, '15-03-2018', '17-03-2018')
-# ap booking.set_block(3, '15-03-2018', '18-03-2018')
+first_block = booking.set_block(5, '05-05-2018', '08-05-2018')
+second_block = booking.set_block(5, '05-05-2018', '08-05-2018')
+ap first_block.rooms
 # ap booking.display_available_rooms('15-03-2018', '17-03-2018')
 
 # booking.reserve_room(2, '15-03-2018', '17-03-2018')

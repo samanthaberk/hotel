@@ -29,7 +29,7 @@ module Hotel
         rooms << {
           room_num: room + 1,
           booked_dates: [],
-          is_block?: false
+          is_block: false
         }
       end
 
@@ -102,16 +102,22 @@ module Hotel
 
       # Find available rooms for the block
       available_rooms = display_available_rooms(check_in, check_out)
+      blocked_rooms = []
       if available_rooms.length >= num_rooms
-        blocked_rooms = available_rooms.sample(num_rooms)
+        blocked_rooms = available_rooms[0...num_rooms]
       else
         raise ArgumentError.new("There are only #{available_rooms.length} rooms available on these dates.")
+      end
+
+      # Change selected rooms' blocked status
+      blocked_rooms.each do |room|
+        @rooms[room-1][:is_block] = true
       end
 
       # Load block data
       block_data = {
         id: "B" + (@blocks.length + 1).to_s,
-        blocked_rooms: blocked_rooms,
+        rooms: blocked_rooms,
         nightly_rate: 175.00
       }
 
@@ -127,8 +133,9 @@ module Hotel
 end # hotel module
 
 # booking = Hotel::BookingManager.new
-# print booking.set_block(5, '15-03-2018', '17-03-2018')
-# print booking.reserve_room(1, '15-03-2018', '17-03-2018')
+# print booking.rooms[0][:is_block]
+# booking.reserve_room(1, '15-03-2018', '17-03-2018')
+# new_block = booking.set_block(5, '15-03-2018', '17-03-2018')
 # booking.reserve_room(2, '15-03-2018', '20-03-2018')
 # booking.reserve_room(2, '20-03-2018', '21-03-2018')
 # ap booking.display_available_rooms('15-03-2018', '17-03-2018')

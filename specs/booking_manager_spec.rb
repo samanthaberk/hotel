@@ -12,7 +12,7 @@ describe "Booking Manager Class" do
 
     it "establishes the base data structures when instantiated" do
       booking_manager = Hotel::BookingManager.new
-      [:rooms, :reservations].each do |data|
+      [:rooms, :reservations, :blocks, :blocked_reservations].each do |data|
         booking_manager.must_respond_to data
       end
 
@@ -60,6 +60,12 @@ describe "Booking Manager Class" do
       new_reservation = @booking_manager.reserve_room(1, '15-03-2018', '17-03-2018')
       proc{ @booking_manager.reserve_room(1, '15-03-2018', '17-03-2018') }.must_raise ArgumentError
     end
+
+    it "raises and exception if the user tries to reserve a room on dates for which it's blocked" do
+      block = @booking_manager.set_block(5, '05-05-2018', '08-05-2018')
+      proc{ @booking_manager.reserve_room(1, '05-05-2018', '08-05-2018') }.must_raise ArgumentError
+    end
+
   end # reserve_room
 
   describe "display_reservations method" do
@@ -223,5 +229,53 @@ describe "Booking Manager Class" do
     end
 
   end # set_block method
+
+  describe "reserve_blocked_room" do
+    before do
+      @booking_manager = Hotel::BookingManager.new
+      @block = @booking_manager.set_block(3, '05-05-2018', '08-05-2018')
+    end
+
+    it "creates a new reservation instance" do
+      new_reservation = @booking_manager.reserve_blocked_room("B1", 1)
+      new_reservation.must_be_instance_of Hotel::Reservation
+    end
+
+    it "raises an exception if there are no more rooms available in the block" do
+      @booking_manager.reserve_blocked_room("B1", 1)
+      @booking_manager.reserve_blocked_room("B1", 2)
+      @booking_manager.reserve_blocked_room("B1", 3)
+
+      proc{ @booking_manager.reserve_blocked_room("B1") }.must_raise ArgumentError
+    end
+
+  end
+
+  describe "check_block_availability" do
+
+    it "returns an array of rooms that have NOT been reserved from the block" do
+      booking_manager = Hotel::BookingManager.new
+      booking_manager.set_block(3, '05-05-2018', '08-05-2018')
+      booking_manager.reserve_blocked_room("B1", 1)
+
+      booking_manager.check_block_availability("B1").wont_include 1
+      booking_manager.check_block_availability("B1").must_include 2
+      booking_manager.check_block_availability("B1").must_include 3
+      booking_manager.check_block_availability("B1").must_be_instance_of Array
+    end
+
+    it "returns an empty array if all rooms in the block have been booked" do
+      booking_manager = Hotel::BookingManager.new
+      booking_manager.set_block(3, '05-05-2018', '08-05-2018')
+
+      booking_manager.reserve_blocked_room("B1", 1)
+      booking_manager.reserve_blocked_room("B1", 2)
+      booking_manager.reserve_blocked_room("B3", 3)
+
+      booking_manager.check_block_availability.must_equal []
+
+    end
+
+  end
 
 end

@@ -12,7 +12,7 @@ module Hotel
       @room_num = reservation_data[:room_num]
       @check_in = reservation_data[:check_in]
       @check_out = reservation_data[:check_out]
-      @nightly_rate = 200.00
+      @nightly_rate = reservation_data[:nightly_rate]
 
       # Check for validity of room number and dates
       check_valid_room(@room_num)

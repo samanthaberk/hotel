@@ -10,12 +10,13 @@ module Hotel
 
   class BookingManager < Validation
     TOTAL_ROOMS = 20
-    attr_reader :rooms, :reservations
+    attr_reader :rooms, :reservations, :blocks, :blocked_reservations
 
     def initialize
       @rooms = load_rooms # an array of hashes containing room info
       @reservations = []
       @blocks = []
+      @blocked_reservations = []
     end
 
     def display_room_list
@@ -29,7 +30,6 @@ module Hotel
         rooms << {
           room_num: room + 1,
           booked_dates: [],
-          is_block: false
         }
       end
 
@@ -51,6 +51,7 @@ module Hotel
         room_num: room_num,
         check_in: Date.parse(check_in),
         check_out: Date.parse(check_out),
+        nightly_rate: 200.00
       }
 
       # use data to intantiate a new reservation and add it to the reservations list
@@ -133,7 +134,6 @@ module Hotel
       block_data = {
         id: "B" + (@blocks.length + 1).to_s,
         rooms: blocked_rooms,
-        nightly_rate: 175.00,
         dates: Date.parse(check_in)...Date.parse(check_out)
       }
 
@@ -144,19 +144,68 @@ module Hotel
       return new_block
     end
 
-    # def reserve_blocked_room(block_id)
-    #   @blocks
-    # end
+    def check_block_availability(block_id)
+      # Find the specific block by its id
+      block = @blocks.find do |block|
+        block.id == block_id
+      end
+
+      # Isolate rooms in the block that have already been reserved
+      reserved_blocked_rooms = []
+      @blocked_reservations.each do |reservation|
+        reserved_blocked_rooms << reservation.room_num
+      end
+
+      # Compare each room in the block to the list of reserved block rooms
+      available_rooms_in_block = []
+      block.rooms.each do |room|
+        if reserved_blocked_rooms.include?(room) == false
+          available_rooms_in_block << room
+        end
+      end
+
+      return available_rooms_in_block
+
+    end
+
+    def reserve_blocked_room(block_id, room_num)
+      # check if the room is available in the block
+      available_rooms = check_block_availability(block_id)
+      if available_rooms.include?(room_num) == false
+        raise ArgumentError.new("Room is not available")
+      end
+
+      # Find the specific block by its id
+      block = @blocks.find do |block|
+        block.id == block_id
+      end
+
+      # if it is available, load reservation data
+      reservation_data = {
+        id: @blocked_reservations.length + 1,
+        room_num: room_num,
+        check_in: block.dates.first,
+        check_out: block.dates.last,
+        nightly_rate: 175.00,
+      }
+
+      # use data to intantiate a new reservation and add it to the reservations list
+      new_reservation = Reservation.new(reservation_data)
+      @blocked_reservations.push(new_reservation)
+      return new_reservation
+
+    end # reserve_blocked_room
 
   end # booking manager class
 
 end # hotel module
 
-booking = Hotel::BookingManager.new
-# booking.reserve_room(1, '15-03-2018', '17-03-2018')
-first_block = booking.set_block(5, '05-05-2018', '08-05-2018')
-second_block = booking.set_block(5, '05-05-2018', '08-05-2018')
-ap first_block.rooms
+# booking = Hotel::BookingManager.new
+# booking.set_block(5, '05-05-2018', '08-05-2018')
+# booking.reserve_blocked_room("B1", 1)
+# # puts ""
+# ap booking.check_block_availability("B1")
+
 # ap booking.display_available_rooms('15-03-2018', '17-03-2018')
 
 # booking.reserve_room(2, '15-03-2018', '17-03-2018')

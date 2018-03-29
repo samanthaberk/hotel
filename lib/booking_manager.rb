@@ -85,7 +85,7 @@ module Hotel
       check_date_validity(check_out, check_in)
 
       # Define date range to search for
-      requested_dates = Set.new(Date.parse(check_in)...Date.parse(check_out))
+      requested_dates = find_date_range(check_in, check_out)
 
       # Loop through all rooms add any that are NOT booked during the date range to available_rooms
       available_rooms = []
@@ -200,13 +200,13 @@ module Hotel
 
 end # hotel module
 
-# booking = Hotel::BookingManager.new
-# booking.set_block(5, '05-05-2018', '08-05-2018')
-# booking.reserve_blocked_room("B1", 1)
-# # puts ""
-# ap booking.check_block_availability("B1")
+booking = Hotel::BookingManager.new
+booking.set_block(5, '05-05-2018', '08-05-2018')
+booking.reserve_blocked_room("B1", 1)
+# puts ""
+ap booking.check_block_availability("B1")
 
-# ap booking.display_available_rooms('15-03-2018', '17-03-2018')
+ap booking.display_available_rooms('15-03-2018', '17-03-2018')
 
 # booking.reserve_room(2, '15-03-2018', '17-03-2018')
 

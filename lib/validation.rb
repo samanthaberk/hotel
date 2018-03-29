@@ -4,6 +4,10 @@ module Hotel
 
   class Validation
 
+    def find_date_range(check_in, check_out)
+      requested_dates = Set.new(Date.parse(check_in)...Date.parse(check_out))
+    end
+
     def check_date_validity(check_out, check_in)
       if check_in > check_out
         raise ArgumentError.new("Check-out date cannot be earlier than check-in.")

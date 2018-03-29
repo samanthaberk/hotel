@@ -51,7 +51,7 @@ module Hotel
         room_num: room_num,
         check_in: Date.parse(check_in),
         check_out: Date.parse(check_out),
-        nightly_rate: 200.00
+        nightly_rate: 200.0
       }
 
       # use data to intantiate a new reservation and add it to the reservations list
@@ -97,10 +97,6 @@ module Hotel
 
       return available_rooms
     end #display_available_rooms
-
-    def reserved_for_dates?(room, requested_dates)
-      Set.new(room[:booked_dates].flatten).intersect?(requested_dates)
-    end
 
     def blocked_for_dates?(room, requested_dates)
       @blocks.each do |block|
